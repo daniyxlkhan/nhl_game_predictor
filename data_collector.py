@@ -1,22 +1,8 @@
-import requests
-import json
 from datetime import datetime, timedelta
 import time
-
-def get_games_for_date(date_str):
-    """Get all games for a specific date (format: YYYY-MM-DD)"""
-    url = f"https://api-web.nhle.com/v1/schedule/{date_str}"
-    
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"Error for {date_str}: {response.status_code}")
-            return None
-    except Exception as e:
-        print(f"Exception for {date_str}: {e}")
-        return None
+import requests
+import json
+import csv
 
 def collect_historical_games(start_date, end_date):
     """Collect games from a date range"""
@@ -45,9 +31,48 @@ def collect_historical_games(start_date, end_date):
         current_date += timedelta(days=1)
         
         # Be nice to the API (small delay)
-        time.sleep(0.1)
+        time.sleep(1)
     
     return all_games
+
+
+def get_games_for_date(date_str):
+    """Get all games for a specific date (format: YYYY-MM-DD)"""
+    url = f"https://api-web.nhle.com/v1/schedule/{date_str}"
+    
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open('api_response_games.json', 'w') as f:
+                json.dump(response.json(), f, indent=2)
+            return response.json()
+        else:
+            print(f"Error for {date_str}: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"Exception for {date_str}: {e}")
+        return None
+
+
+def get_standings_for_date(date_str):
+    """Get all standings of each team for a specific date (format: YYYY-MM-DD)"""
+    url = f"https://api-web.nhle.com/v1/standings/{date_str}";
+
+    try:
+        response = requests.get(url);
+        if response.status_code == 200:
+            with open('api_response_standings.json', 'w') as f:
+                json.dump(response.json(), f, indent=2)
+            return response.json()
+        else:
+            print(f"Error for {data_str}: {response.status_code}")
+            return None
+    except Exception as e:
+        print(f"Exception for {data_str}: {e}")
+        return None
+
+get_games_for_date("2024-03-15")
+get_standings_for_date("2024-03-15")
 
 def extract_game_data(games):
     """Extract clean data from games for machine learning"""
@@ -61,7 +86,9 @@ def extract_game_data(games):
             home_team = game['homeTeam']['commonName']['default']
             away_score = game['awayTeam']['score']
             home_score = game['homeTeam']['score']
+            # Extract more advanced info
             
+
             # Calculate our prediction targets
             total_goals = away_score + home_score
             winner = 'home' if home_score > away_score else 'away'
@@ -87,26 +114,23 @@ def extract_game_data(games):
     
     return clean_data
 
-# Test with a small date range first
-print("Collecting games from March 2024...")
-games = collect_historical_games("2024-03-01", "2024-03-07")
-print(f"Found {len(games)} completed games")
+# # 2024 NHL Season
+# print("Collecting games from 2024 NHL Season")
+# games = collect_historical_games("2024-10-04", "2025-06-17")
+# print(f"Found {len(games)} completed games")
 
-# Extract clean data
-print("\nExtracting clean data...")
-clean_games = extract_game_data(games)
-print(f"Successfully processed {len(clean_games)} games")
+# # Extract clean data
+# print("\nExtracting clean data...")
+# clean_games = extract_game_data(games)
+# print(f"Successfully processed {len(clean_games)} games")
 
-# Show first 3 games
-print("\nFirst 3 games:")
-for i, game in enumerate(clean_games[:3]):
-    print(f"{i+1}. {game['date']}: {game['away_team']} @ {game['home_team']}")
-    print(f"   Score: {game['final_score']}, Winner: {game['winner']}, Total: {game['total_goals']}")
-    print()
-
-
-
-
+# # write all cleaned data onto a csv file
+# with open('nhl_data.csv', mode='w') as csvfile:
+#     fieldnames = clean_games[0].keys()
+#     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+#     writer.writeheader()
+#     for row in clean_games:
+#         writer.writerow(row);
 
 # Stats to keep track of from https://api-web.nhle.com/v1/standings/now
 
