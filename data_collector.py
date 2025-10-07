@@ -66,8 +66,8 @@ def get_games_for_date(date_str):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            with open('api_response_games.json', 'w') as f:
-                json.dump(response.json(), f, indent=2)
+            # with open('api_response_games.json', 'w') as f:
+            #     json.dump(response.json(), f, indent=2)
             return response.json()
         else:
             print(f"Error for {date_str}: {response.status_code}")
@@ -84,8 +84,8 @@ def get_standings_for_date(date_str):
     try:
         response = requests.get(url);
         if response.status_code == 200:
-            with open('api_response_standings.json', 'w') as f:
-                json.dump(response.json(), f, indent=2)
+            # with open('api_response_standings.json', 'w') as f:
+            #     json.dump(response.json(), f, indent=2)
             return response.json()
         else:
             print(f"Error for {date_str}: {response.status_code}")
@@ -197,7 +197,7 @@ clean_standings = extract_standings_date(standings)
 print(f"Successfully processed {len(clean_standings)} standings")
 
 # write games data onto a CSV file
-with open('nhl_data.csv', mode='w') as csvfile:
+with open('nhl_games_data.csv', mode='w') as csvfile:
     fieldnames = clean_games[0].keys()
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
