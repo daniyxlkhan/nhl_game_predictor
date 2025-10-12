@@ -29,7 +29,7 @@ def merge_games_with_standings():
                 'date': game['date'],
                 'away_team': game['away_team'],
                 'home_team': game['home_team'],
-                'away_wins': away_stats.iloc[0]['wins'],
+                'away_wins': away_stats.iloc[0]['wins'], # get wins from the first row of dataframe 
                 'away_losses': away_stats.iloc[0]['losses'],
                 'away_goals_for': away_stats.iloc[0]['goalFor'],
                 'away_goals_against': away_stats.iloc[0]['goalAgainst'],
