@@ -29,8 +29,8 @@ def collect_historical_games(start_date, end_date):
         
         current_date += timedelta(days=1)
         
-        # Be nice to the API (small delay)
-        time.sleep(0.5)
+        # API (small delay)
+        time.sleep(0.4)
     
     return all_games
 
@@ -54,8 +54,8 @@ def collect_historical_standings(start_date, end_date):
 
         current_date += timedelta(days=1)
 
-        # Be nice to the API again (small delay)
-        time.sleep(0.5)
+        # API again (small delay)
+        time.sleep(0.4)
 
     return all_standings
 
