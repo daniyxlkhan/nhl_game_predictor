@@ -2,12 +2,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+import joblib
 
 def train_winner_predictor():
-    print("Loading training data...")
+    # Read the data 
     df = pd.read_csv("nhl_training_data_small.csv")
-
     df.columns = df.columns.str.strip()
+
     print(f"Loaded {len(df)} games")
 
     df['wins_diff'] = df['home_wins'] - df['away_wins']
@@ -33,11 +34,9 @@ def train_winner_predictor():
 
     # Split data for training and testing
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    
     print(f"Training on {len(X_train)} games, testing on {len(X_test)} games")
 
     # Train the model
-    print("Training Random Forest model...")
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     
@@ -55,26 +54,20 @@ def train_winner_predictor():
     print(f"\nDetailed Results:")
     print(classification_report(y_test, y_pred))
     
-    # Feature importance
-    print(f"\n Most Important Features:")
-    feature_importance = pd.DataFrame({
-        'feature': features,
-        'importance': model.feature_importances_
-    }).sort_values('importance', ascending=False)
-    
-    for idx, row in feature_importance.iterrows():
-        print(f"{row['feature']:20s}: {row['importance']:.3f}")
-    
     # Test on a few examples
     print(f"\nSample Predictions:")
     for i in range(15):
         actual = y_test.iloc[i]
         predicted = y_pred[i]
-        confidence = max(model.predict_proba(X_test.iloc[i:i+1])[0])
+        confidence = max(model.predict_proba(X_test.iloc[i:i+1])[0]) # returns 2D array with 1 row so im using [0]
         status = "(CORRECT)" if actual == predicted else "(WRONG)"
-        print(f"{status} Actual: {actual:4s} | Predicted: {predicted:4s} | Confidence: {confidence:.2f}")
+        print(f"{status} Actual: {actual} | Predicted: {predicted} | Confidence: {confidence:.2f}")
     
     return model, features
 
 if __name__ == "__main__":
     model, features = train_winner_predictor()
+
+    # Save the model
+    joblib.dump(model, 'nhl_model.pkl')
+    joblib.dump(features, 'model_features.pkl')
