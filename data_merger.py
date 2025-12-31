@@ -2,8 +2,8 @@ import csv
 import pandas as pd  
 
 def merge_games_with_standings():
-    games_df = pd.read_csv("nhl_games_data_small.csv")
-    standings_df = pd.read_csv("nhl_standings_data_small.csv")
+    games_df = pd.read_csv("nhl_games_data.csv")
+    standings_df = pd.read_csv("nhl_standings_data.csv")
 
     games_df.columns = games_df.columns.str.strip()
     standings_df.columns = standings_df.columns.str.strip()
