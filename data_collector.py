@@ -179,8 +179,8 @@ def extract_game_data(games):
     return clean_data
 
 # Get season games
-print("Collecting games from 2024 NHL Season")
-games = collect_historical_games("2024-10-04", "2025-06-17")
+print("Collecting games from 2023-24 and 2024-25 NHL Seasons")
+games = collect_historical_games("2023-10-10", "2025-01-15")
 print(f"Found {len(games)} completed games")
 
 print("\nExtracting clean data...")
@@ -188,8 +188,8 @@ clean_games = extract_game_data(games)
 print(f"Successfully processed {len(clean_games)} games")
 
 # Get season standing data
-print("Collecting standings from 2024 NHL Season")
-standings = collect_historical_standings("2024-03-01", "2024-03-15")  
+print("\nCollecting standings from 2023-24 and 2024-25 NHL Seasons")
+standings = collect_historical_standings("2023-10-10", "2025-01-15")  
 print(f"Found {len(standings)} standings")
 
 print("\nExtracting clean data...")
