@@ -1,5 +1,9 @@
 # NHL Game Predictor
 
+<div align="center">
+  <img src="nhl_logo.png" alt="NHL Logo" width="200"/>
+</div>
+
 Predicts NHL game winners using machine learning based on team statistics.
 
 ## What it does
