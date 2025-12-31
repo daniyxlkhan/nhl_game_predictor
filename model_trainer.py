@@ -6,7 +6,7 @@ import joblib
 
 def train_winner_predictor():
     # Read the data 
-    df = pd.read_csv("nhl_training_data_small.csv")
+    df = pd.read_csv("nhl_training_data.csv")
     df.columns = df.columns.str.strip()
 
     print(f"Loaded {len(df)} games")
