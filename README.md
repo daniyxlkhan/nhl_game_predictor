@@ -15,8 +15,8 @@ Predicts NHL game winners using machine learning based on team statistics.
 ## Setup
 
 ```bash
-python -m venv nhl_predictor_env
-source nhl_predictor_env/bin/activate
+python -m venv nhl_game_predictor_env
+source nhl_game_predictor_env/bin/activate
 ```
 
 ## Usage
